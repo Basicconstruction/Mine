@@ -5,48 +5,50 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Item extends JButton {
-    private JDialog dialog;
-    private JFrame jf;
     private String message;
-    private final int dialogY_expend = 39;
-    private final int dialogX_expend = 16;
-    private final int dialogDesignw;
-    private final int dialogDesignh;
-    public Item(JFrame jf){
-        super();
-        this.message = "";
-        setMessage("");
-        this.jf = jf;
-        dialogDesignw = 300;
-        dialogDesignh = 200;
-        action();
+    private volatile boolean isBoom = false;
+    private final int x;
+    public int getX() {
+        return x;
     }
-    public Item(String text,JFrame jf){
+    public int getY() {
+        return y;
+    }
+    private final int y;
+    public Item(String text,int x,int y){
         super("");
         this.message = text;
         setMessage("");
-        this.jf = jf;
-        dialogDesignw = 300;
-        dialogDesignh = 200;
+        this.x = x;
+        this.y = y;
         action();
     }
-   public void setMessage(String text){
+    public void setIsBoom(boolean isBoom){
+        this.isBoom = isBoom;
+    }
+    public boolean getIsBoom(){
+        return isBoom;
+    }
+    public void justMessage(String text){
+        this.message = text;
+    }
+    public void setMessage(String text){
         super.setText("");
         this.message = text;
-   }
-   public String getMessage(){
+    }
+    public String getMessage(){
         return this.message;
-   }
+    }
     protected void action(){
-        addActionListener(e->{
-//            if(dialog==null){
-//                dialog = new JDialog(jf,"hello",true);
-//            }
-//            dialog.setBounds(200,100, dialogDesignw + dialogX_expend, dialogDesignh + dialogY_expend);
-//            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//            dialog.setVisible(true);
-            Item.this.setMessage("99");//会激发重绘
-        });
+//        addActionListener(e->{
+////            if(dialog==null){
+////                dialog = new JDialog(jf,"hello",true);
+////            }
+////            dialog.setBounds(200,100, dialogDesignw + dialogX_expend, dialogDesignh + dialogY_expend);
+////            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+////            dialog.setVisible(true);
+//            Item.this.setMessage("99");//会激发重绘
+//        });
     }
     @Override
     public void paint(Graphics g){
@@ -61,9 +63,9 @@ public class Item extends JButton {
     }
     public int calculateX(int length,int size,int width){
         int totalX = length*size/2;
-        if(length>0){
-            System.out.println(totalX+" "+(width/2-totalX/2));
-        }
+//        if(length>0){
+//            System.out.println(totalX+" "+(width/2-totalX/2));
+//        }
         return (width/2-totalX/2);
     }
     public int calculateY(int size,int height){
