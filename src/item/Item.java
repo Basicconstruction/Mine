@@ -49,17 +49,16 @@ public class Item extends JLabel {
         int height = Item.this.getHeight();
         g2.setStroke(new BasicStroke(2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
         g2.drawRect(0,0,width,height);
+
         if (!isPacked) {
             if(!isBoom){
                 g2.setColor(Color.BLUE);
-                g2.setFont(new Font("微软雅黑", Font.PLAIN, 16));
+                g2.setFont(new Font("微软雅黑", Font.PLAIN, width/4));
                 int size = g2.getFont().getSize();
                 g2.drawString(
                         Item.this.getMessage(),
                         calculateX(calLength(Item.this.getMessage()), size, width),
                         calculateY(size, height));
-            }else{
-                setIcon(new ImageIcon(""));
             }
         }
     }
