@@ -1,89 +1,91 @@
 package item;
 
-
 import javax.swing.*;
 import java.awt.*;
 
-public class Item extends JButton {
-    private String message;
+public class Item extends JLabel {
+    private String message="";
     private volatile boolean isBoom = false;
-    private final int x;
-    public int getX() {
-        return x;
-    }
-    public int getY() {
-        return y;
-    }
-    private final int y;
-    public Item(String text,int x,int y){
-        super("");
-        this.message = text;
-        setMessage("");
+    public final int x;
+    public volatile boolean isPacked = true;
+
+    public final int y;
+
+    public Item(int x, int y) {
+        super();
+        setOpaque(true);
+        setBackground(Color.LIGHT_GRAY);
         this.x = x;
         this.y = y;
-        action();
     }
-    public void setIsBoom(boolean isBoom){
+
+    public void setIsBoom(boolean isBoom) {
         this.isBoom = isBoom;
     }
-    public boolean getIsBoom(){
+
+    public boolean getIsBoom() {
         return isBoom;
     }
-    public void justMessage(String text){
+
+    public void justMessage(String text) {
         this.message = text;
     }
-    public void setMessage(String text){
+
+    public void setMessage(String text) {
         super.setText("");
         this.message = text;
     }
-    public String getMessage(){
+
+    public String getMessage() {
         return this.message;
     }
-    protected void action(){
-//        addActionListener(e->{
-////            if(dialog==null){
-////                dialog = new JDialog(jf,"hello",true);
-////            }
-////            dialog.setBounds(200,100, dialogDesignw + dialogX_expend, dialogDesignh + dialogY_expend);
-////            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-////            dialog.setVisible(true);
-//            Item.this.setMessage("99");//会激发重绘
-//        });
-    }
+
     @Override
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         super.paint(g);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setColor(Color.black);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.BLACK);
         int width = Item.this.getWidth();
         int height = Item.this.getHeight();
-        g2.setFont(new Font("微软雅黑",Font.PLAIN,16));
-        int size = g2.getFont().getSize();
-        g2.drawString(Item.this.getMessage(),calculateX(calLength(Item.this.getMessage()),size,width),calculateY(size,height));
-    }
-    public int calculateX(int length,int size,int width){
-        int totalX = length*size/2;
-//        if(length>0){
-//            System.out.println(totalX+" "+(width/2-totalX/2));
-//        }
-        return (width/2-totalX/2);
-    }
-    public int calculateY(int size,int height){
-        return height/2+size/2;
-    }
-    public int calLength(String str){
-        int length = 0;
-        for(char c:str.toCharArray()){
-            if(isAscii(c)){
-                length++;
+        g2.setStroke(new BasicStroke(2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+        g2.drawRect(0,0,width,height);
+        if (!isPacked) {
+            if(!isBoom){
+                g2.setColor(Color.BLUE);
+                g2.setFont(new Font("微软雅黑", Font.PLAIN, 16));
+                int size = g2.getFont().getSize();
+                g2.drawString(
+                        Item.this.getMessage(),
+                        calculateX(calLength(Item.this.getMessage()), size, width),
+                        calculateY(size, height));
             }else{
-                length+=2;
+                setIcon(new ImageIcon(""));
+            }
+        }
+    }
+
+    public int calculateX(int length, int size, int width) {
+        int totalX = length * size / 2;
+        return (width / 2 - totalX / 2);
+    }
+
+    public int calculateY(int size, int height) {
+        return height / 2 + size / 2;
+    }
+
+    public int calLength(String str) {
+        int length = 0;
+        for (char c : str.toCharArray()) {
+            if (isAscii(c)) {
+                length++;
+            } else {
+                length += 2;
             }
         }
         return length;
     }
-    public boolean isAscii(char c){
-        return c<256;
-    }
 
+    public boolean isAscii(char c) {
+        return c < 256;
+    }
 }
