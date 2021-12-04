@@ -6,7 +6,7 @@ import java.awt.*;
 public class Picker extends JLabel {
     public volatile boolean isSelected;
     public Picker(String message,boolean isSelected){
-        super(message);
+        super(message,JLabel.CENTER);
         this.isSelected = isSelected;
         setOpaque(true);
     }

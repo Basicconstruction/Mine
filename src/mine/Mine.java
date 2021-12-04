@@ -85,6 +85,7 @@ public class Mine extends JFrame {
             JLabel jl = new JLabel("OverTime!You are died!",JLabel.CENTER);
             dialog.add(jl);
             jl.setBounds(30,30,100,50);
+            dialog.setVisible(true);
         }
     }
 
@@ -95,7 +96,6 @@ public class Mine extends JFrame {
         dialog.setBounds(
                 (w/2-(dialogDesignw + dialogX_expend)/2), h/2-(dialogDesignh + dialogY_expend)/2, dialogDesignw + dialogX_expend, dialogDesignh + dialogY_expend);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setVisible(true);
         dialog.setLayout(null);
     }
 
@@ -192,24 +192,20 @@ public class Mine extends JFrame {
     }
     /** 计算并将地雷的数据传送到地雷 * */
     protected void setBoomMessage(Item it) {
-        if (it.getIsBoom()) {
-            it.justMessage("Boom");
-        } else {
-            int x = it.x;
-            int y = it.y;
-            int count = 0;
-            count += countBoom(x - 1, y - 1) ? 1 : 0;
-            count += countBoom(x, y - 1) ? 1 : 0;
-            count += countBoom(x + 1, y - 1) ? 1 : 0;
+        int x = it.x;
+        int y = it.y;
+        int count = 0;
+        count += countBoom(x - 1, y - 1) ? 1 : 0;
+        count += countBoom(x, y - 1) ? 1 : 0;
+        count += countBoom(x + 1, y - 1) ? 1 : 0;
 
-            count += countBoom(x - 1, y) ? 1 : 0;
-            count += countBoom(x + 1, y) ? 1 : 0;
+        count += countBoom(x - 1, y) ? 1 : 0;
+        count += countBoom(x + 1, y) ? 1 : 0;
 
-            count += countBoom(x - 1, y + 1) ? 1 : 0;
-            count += countBoom(x, y + 1) ? 1 : 0;
-            count += countBoom(x + 1, y + 1) ? 1 : 0;
-            it.justMessage("" + count);
-        }
+        count += countBoom(x - 1, y + 1) ? 1 : 0;
+        count += countBoom(x, y + 1) ? 1 : 0;
+        count += countBoom(x + 1, y + 1) ? 1 : 0;
+        it.justMessage("" + count);
     }
     /** 计算出 一个区域，如果不是地雷，他周围的地雷的数目 */
     private boolean countBoom(int x2, int y2) {
@@ -241,9 +237,12 @@ public class Mine extends JFrame {
                                 // 认为是雷
                                 it.setIcon(new ImageIcon("G:\\Java\\Mine\\src\\mine\\cf.png"));
                                 System.out.println("Unbelievably,you are right!");
+                                it.setMessage(it.getMessage());
                                 it.repaint();
                             } else {
                                 // 认为不是雷，直接点击
+                                it.setMessage("boom");
+                                it.repaint();
                                 dialog = new JDialog(Mine.this, "你选中了地雷，你凉了！", true);
                                 Dimension d = getToolkit().getScreenSize();
                                 int w = (int) d.getWidth();
@@ -255,6 +254,7 @@ public class Mine extends JFrame {
                                 dialog.add(jl);
                                 jl.setBounds(30,30,100,50);
                                 dialog.setVisible(true);
+
                             }
                         } else {
                             it.repaint();
@@ -263,8 +263,9 @@ public class Mine extends JFrame {
                                 showDialog();
                                 JLabel jl = new JLabel("判断失误,加时两分钟",JLabel.CENTER);
                                 dialog.add(jl);
-                                jl.setBounds(30,30,100,50);
+                                jl.setBounds(30,30,200,50);
                                 incrementMinute(2);
+                                dialog.setVisible(true);
                             } else {
                                 it.setMessage(it.getMessage());
                             }
